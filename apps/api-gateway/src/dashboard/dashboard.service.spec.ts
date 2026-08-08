@@ -18,12 +18,7 @@ describe('DashboardService - default dashboards', () => {
         entities.forEach((e) => {
           if (!e.id) e.id = Math.random().toString(36).substring(2, 10);
           stored.push(e);
-          it('should throw NotFoundException when dashboard not found', async () => {
-    const tenantId = 'tenant-123';
-    // No dashboards created
-    await expect(service.getDashboardById(tenantId, 'nonexistent-id')).rejects.toThrowError('Dashboard nonexistent-id not found for tenant tenant-123');
-  });
-});
+        });
         return entities;
       }),
       find: jest.fn().mockImplementation(async (options: any) => {
@@ -51,5 +46,11 @@ describe('DashboardService - default dashboards', () => {
       expect(d.tenantId).toBe(tenantId);
       expect(d.id).toBeDefined();
     });
+  });
+
+  it('should throw NotFoundException when dashboard not found', async () => {
+    const tenantId = 'tenant-123';
+    // No dashboards created for this tenant
+    await expect(service.getDashboardById(tenantId, 'nonexistent-id')).rejects.toThrowError('Dashboard nonexistent-id not found for tenant tenant-123');
   });
 });
