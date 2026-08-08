@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import { sendInvitation, InviteResponse } from '../api/invitation';
 
 interface InviteMemberModalProps {
@@ -13,6 +13,12 @@ interface InviteMemberModalProps {
  * It displays a form, handles submission state, and shows success or error messages.
  */
 export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ tenantId, onClose }) => {
+  const handleClose = () => {
+    setEmail('');
+    setStatus('idle');
+    onClose();
+  };
+
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -41,7 +47,7 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ tenantId, 
         return (
           <div>
             <p>Invitation sent successfully!</p>
-            <button type="button" onClick={onClose}>Close</button>
+            <button type="button" onClick={handleClose}>Close</button>
           </div>
         );
       case 'error':
@@ -78,10 +84,10 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ tenantId, 
     <div
       role="dialog"
       aria-modal="true"
-      style={modalOverlayStyle}
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       onClick={(e) => {
         // close when clicking outside the dialog content
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
     >
       <div style={modalContentStyle}>{renderContent()}</div>
