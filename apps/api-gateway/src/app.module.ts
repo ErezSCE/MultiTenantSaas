@@ -13,7 +13,7 @@ import { DataSource } from 'typeorm';
       migrationsRun: true,
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
     }),
-    AuthModule,
+    AuthModule, DashboardModule, TenantModule,
   ],
 })
 export class AppModule {}

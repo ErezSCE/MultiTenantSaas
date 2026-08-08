@@ -1,24 +1,13 @@
 import { Injectable } from '@nestjs/common';
-
-export interface Dashboard {
-  id: string;
-  tenantId: string;
-  name: string;
-  charts: any[]; // Simplified for this example
-}
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Dashboard } from './dashboard.entity';
 
 /**
- * Service responsible for managing dashboards. For the purpose of this kata we
- * use an in‑memory array to simulate persistence.
- *
- * The `createDefaultDashboards` method is called after a tenant is created and
- * inserts a predefined set of dashboards for that tenant.
+ * Dashboard service using TypeORM for persistence.
  */
 @Injectable()
 export class DashboardService {
-  /** In‑memory store of dashboards */
-  private readonly dashboards: Dashboard[] = [];
-
   /** Predefined dashboards that should exist for every new tenant */
   private readonly defaultDashboardTemplates: Omit<Dashboard, 'id' | 'tenantId'>[] = [
     { name: 'Event Volume', charts: [] },
@@ -26,29 +15,24 @@ export class DashboardService {
     { name: 'Top Events', charts: [] },
   ];
 
+  constructor(
+    @InjectRepository(Dashboard)
+    private readonly dashboardRepo: Repository<Dashboard>,
+  ) {}
+
   /**
    * Creates the default dashboards for a given tenant.
    * @param tenantId The identifier of the tenant.
    */
   async createDefaultDashboards(tenantId: string): Promise<void> {
-    // In a real implementation this would be a DB transaction.
-    const newDashboards = this.defaultDashboardTemplates.map((tpl) => ({
-      id: this.generateId(),
-      tenantId,
-      name: tpl.name,
-      charts: tpl.charts,
-    }));
-    this.dashboards.push(...newDashboards);
+    const dashboards = this.defaultDashboardTemplates.map((tpl) =>
+      this.dashboardRepo.create({ tenantId, name: tpl.name, charts: tpl.charts }),
+    );
+    await this.dashboardRepo.save(dashboards);
   }
 
-  /** Helper to retrieve dashboards for a tenant – used in tests */
+  /** Retrieve dashboards for a tenant */
   async getDashboardsByTenant(tenantId: string): Promise<Dashboard[]> {
-    return this.dashboards.filter((d) => d.tenantId === tenantId);
-  }
-
-  /** Simple deterministic id generator for the example */
-  private generateId(): string {
-    // Using current timestamp + random for uniqueness in this mock.
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    return this.dashboardRepo.find({ where: { tenantId } });
   }
 }

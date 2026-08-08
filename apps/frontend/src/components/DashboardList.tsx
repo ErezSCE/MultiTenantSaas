@@ -44,6 +44,10 @@ const DashboardList: React.FC = () => {
     return <div role="alert">{error}</div>;
   }
 
+  if (dashboards.length === 0) {
+    return <div>No dashboards available</div>;
+  }
+
   return (
     <ul>
       {dashboards.map((dashboard) => (

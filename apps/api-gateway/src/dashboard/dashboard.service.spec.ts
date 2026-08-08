@@ -1,10 +1,33 @@
 import { DashboardService } from './dashboard.service';
+import { Dashboard } from './dashboard.entity';
+import { Repository } from 'typeorm';
 
 describe('DashboardService - default dashboards', () => {
   let service: DashboardService;
+  let mockRepo: Partial<Repository<Dashboard>>;
 
   beforeEach(() => {
-    service = new DashboardService();
+    const stored: Dashboard[] = [];
+    mockRepo = {
+      create: jest.fn().mockImplementation((dto: Partial<Dashboard>) => ({
+        id: 'generated-id', // placeholder, will be overwritten by save if needed
+        ...dto,
+      } as Dashboard)),
+      save: jest.fn().mockImplementation(async (entities: Dashboard[]) => {
+        // Simulate DB assign IDs if missing
+        entities.forEach((e) => {
+          if (!e.id) e.id = Math.random().toString(36).substring(2, 10);
+          stored.push(e);
+        });
+        return entities;
+      }),
+      find: jest.fn().mockImplementation(async (options: any) => {
+        const where = options?.where || {};
+        return stored.filter((d) => d.tenantId === where.tenantId);
+      }),
+    } as Partial<Repository<Dashboard>>;
+    // @ts-ignore - inject mock repo
+    service = new DashboardService(mockRepo as Repository<Dashboard>);
   });
 
   it('should create default dashboards for a new tenant', async () => {
