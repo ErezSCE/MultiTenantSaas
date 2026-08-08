@@ -3,8 +3,8 @@
  */
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   roots: ['<rootDir>'],
-  testMatch: ['**/*.test.ts', '**/*.spec.ts', '**/*.test.js'],
+  testMatch: ['**/*.test.ts', '**/*.spec.ts', '**/*.test.js', '**/*.test.tsx'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
 };
