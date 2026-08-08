@@ -14,16 +14,11 @@ describe('DashboardService - default dashboards', () => {
         ...dto,
       } as Dashboard)),
       save: jest.fn().mockImplementation(async (entities: Dashboard[]) => {
-        // Simulate DB assign IDs if missing
+        // Simulate DB assign IDs if missing and store them
         entities.forEach((e) => {
           if (!e.id) e.id = Math.random().toString(36).substring(2, 10);
           stored.push(e);
-          it('should throw NotFoundException when dashboard not found', async () => {
-    const tenantId = 'tenant-123';
-    // No dashboards created
-    await expect(service.getDashboardById(tenantId, 'nonexistent-id')).rejects.toThrowError('Dashboard nonexistent-id not found for tenant tenant-123');
-  });
-});
+        });
         return entities;
       }),
       find: jest.fn().mockImplementation(async (options: any) => {
@@ -46,10 +41,17 @@ describe('DashboardService - default dashboards', () => {
     expect(dashboards).toHaveLength(3);
     const names = dashboards.map((d) => d.name).sort();
     expect(names).toEqual(['Active Users', 'Event Volume', 'Top Events']);
-    // Ensure each dashboard has the correct tenantId
+    // Ensure each dashboard has the correct tenantId and an id
     dashboards.forEach((d) => {
       expect(d.tenantId).toBe(tenantId);
       expect(d.id).toBeDefined();
     });
+  });
+
+  it('should throw NotFoundException when dashboard not found', async () => {
+    const tenantId = 'tenant-123';
+    await expect(service.getDashboardById(tenantId, 'nonexistent-id')).rejects.toThrowError(
+      `Dashboard nonexistent-id not found for tenant ${tenantId}`,
+    );
   });
 });
