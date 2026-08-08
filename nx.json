@@ -1,0 +1,23 @@
+{
+  "npmScope": "multitenantsaas",
+  "namedInputs": { "global": [] },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    }
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint"]
+      }
+    }
+  }
+}
