@@ -1,42 +1,18 @@
-# ─── AgenticDevTeam (do not edit this block) ───
-# Dependencies
+# Node modules
 node_modules/
-__pycache__/
-.venv/
-venv/
-vendor/
-.bundle/
-target/
 
 # Build output
 dist/
-build/
-.next/
-out/
-*.js.map
 
-# Environment & secrets
+# Local env files
 .env
 .env.local
-.env.*.local
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
 
 # Logs
-*.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Test & coverage
-coverage/
-.nyc_output/
-.conventions/
-.worktrees/
-# ─── /AgenticDevTeam ───
+# OS files
+.DS_Store
+Thumbs.db

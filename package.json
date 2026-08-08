@@ -1,0 +1,23 @@
+{
+  "name": "multitenantsaas",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "nx run-many --target=build --all",
+    "test": "npm run workspace-test && jest",
+    "workspace-test": "node tests/workspace.test.js",
+    "lint": "nx run-many --target=lint --all"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "nx": "^16.0.0",
+    "typescript": "^5.2.2"
+  }
+}
