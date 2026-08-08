@@ -12,6 +12,9 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+coverage/
+.env.*.local
 
 # OS files
 .DS_Store

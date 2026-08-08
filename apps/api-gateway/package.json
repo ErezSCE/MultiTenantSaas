@@ -4,6 +4,13 @@
   "version": "0.1.0",
   "main": "src/main.ts",
   "scripts": {
+    "lint": "echo \"api-gateway lint placeholder\"",
+    "test": "echo \"api-gateway test placeholder\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "build": "nest build"
+    "lint": "echo \"api-gateway lint placeholder\"",
+    "test": "echo \"api-gateway test placeholder\""
     "start": "nest start",
     "start:dev": "nest start --watch",
     "build": "nest build"
