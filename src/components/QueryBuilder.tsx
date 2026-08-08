@@ -170,7 +170,7 @@ const QueryBuilder: React.FC = () => {
       </div>
       {result && (
         <div data-testid="query-result" style={{ marginTop: '1rem' }}>
-          <pre>{JSON.stringify(result, null, 2)}</pre>
+          <pre>{JSON.stringify(result)}</pre>
         </div>
       )}
     </div>
