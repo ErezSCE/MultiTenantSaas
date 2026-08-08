@@ -7,15 +7,15 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity({ name: 'dashboards' })
 export class Dashboard {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'tenant_id', type: 'varchar' })
-  tenantId: string;
+  tenantId!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name!: string;
 
   // Storing charts as JSON; adjust type as needed.
   @Column({ type: 'jsonb', nullable: true })
-  charts: any[];
+  charts!: any[];
 }
