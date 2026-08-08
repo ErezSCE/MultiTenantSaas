@@ -1,8 +1,9 @@
-import fs from 'fs';
-import * as path from 'path';
+import { render, screen } from '@testing-library/react';
+import App from './App';
 
-test('App component includes BrowserRouter', () => {
-  const filePath = path.resolve(process.cwd(), 'apps/frontend/src/App.tsx');
-  const content = fs.readFileSync(filePath, 'utf-8');
-  expect(content).toContain('BrowserRouter');
+test('App renders Home route within BrowserRouter', () => {
+  render(<App />);
+  // The Home component contains a heading with text "Welcome to Multitenant SaaS"
+  const heading = screen.getByRole('heading', { name: /welcome to multitenant saas/i });
+  expect(heading).toBeInTheDocument();
 });
