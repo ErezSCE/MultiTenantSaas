@@ -18,12 +18,21 @@ describe('DashboardService - default dashboards', () => {
         entities.forEach((e) => {
           if (!e.id) e.id = Math.random().toString(36).substring(2, 10);
           stored.push(e);
-        });
+          it('should throw NotFoundException when dashboard not found', async () => {
+    const tenantId = 'tenant-123';
+    // No dashboards created
+    await expect(service.getDashboardById(tenantId, 'nonexistent-id')).rejects.toThrowError('Dashboard nonexistent-id not found for tenant tenant-123');
+  });
+});
         return entities;
       }),
       find: jest.fn().mockImplementation(async (options: any) => {
         const where = options?.where || {};
         return stored.filter((d) => d.tenantId === where.tenantId);
+      }),
+      findOne: jest.fn().mockImplementation(async (options: any) => {
+        const where = options?.where || {};
+        return stored.find((d) => d.id === where.id && d.tenantId === where.tenantId) || null;
       }),
     } as Partial<Repository<Dashboard>>;
     // @ts-ignore - inject mock repo

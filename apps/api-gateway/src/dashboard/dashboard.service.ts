@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Dashboard } from './dashboard.entity';
@@ -34,5 +34,17 @@ export class DashboardService {
   /** Retrieve dashboards for a tenant */
   async getDashboardsByTenant(tenantId: string): Promise<Dashboard[]> {
     return this.dashboardRepo.find({ where: { tenantId } });
+  }
+
+  /**
+   * Retrieve a single dashboard by its ID, ensuring it belongs to the given tenant.
+   * Throws NotFoundException if not found or tenant mismatch.
+   */
+  async getDashboardById(tenantId: string, dashboardId: string): Promise<Dashboard> {
+    const dashboard = await this.dashboardRepo.findOne({ where: { id: dashboardId, tenantId } });
+    if (!dashboard) {
+      throw new NotFoundException(`Dashboard ${dashboardId} not found for tenant ${tenantId}`);
+    }
+    return dashboard;
   }
 }

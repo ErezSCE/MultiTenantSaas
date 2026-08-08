@@ -12,10 +12,10 @@ export class Dashboard {
   @Column({ name: 'tenant_id', type: 'varchar' })
   tenantId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
   // Storing charts as JSON; adjust type as needed.
-  @Column({ type: 'simple-json', nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   charts: any[];
 }
