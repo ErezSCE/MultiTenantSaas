@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "main": "src/main.ts",
   "scripts": {
+    "add:bullmq": "npm install bullmq --save"
     "lint": "echo \"api-gateway lint placeholder\"",
     "test": "echo \"api-gateway test placeholder\"",
     "start": "nest start",
